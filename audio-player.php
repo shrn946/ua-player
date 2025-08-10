@@ -163,11 +163,11 @@ class UA_Player_Plugin {
             <form method="post">
                 <?php wp_nonce_field( 'ua_colors_save', 'ua_colors_nonce' ); ?>
                 <table class="form-table">
-                    <tr><th>Light Color</th>
+                    <tr><th>Font Color</th>
                         <td><input type="color" name="ua_light_clr" value="<?php echo esc_attr( get_option('ua_light_clr', '#e5e5e5') ); ?>"></td></tr>
-                    <tr><th>Primary Color</th>
+                    <tr><th>Line Color</th>
                         <td><input type="color" name="ua_primary_clr" value="<?php echo esc_attr( get_option('ua_primary_clr', '#6490f6') ); ?>"></td></tr>
-                    <tr><th>Secondary Color</th>
+                    <tr><th>Shade Color</th>
                         <td><input type="color" name="ua_secondary_clr" value="<?php echo esc_attr( get_option('ua_secondary_clr', '#c1daff') ); ?>"></td></tr>
                     <tr><th>Active Color</th>
                         <td><input type="color" name="ua_active_clr" value="<?php echo esc_attr( get_option('ua_active_clr', '#9599ba') ); ?>"></td></tr>
@@ -224,6 +224,9 @@ class UA_Player_Plugin {
     }
 
     public function render_player_shortcode() {
+	 if (is_admin()) {
+        return ''; // or return '<p>Preview disabled in admin.</p>';
+    }
         $items = get_option( $this->option_name, [] );
         if ( ! is_array( $items ) ) {
             $decoded = json_decode( $items, true );
@@ -284,7 +287,7 @@ class UA_Player_Plugin {
                   </button>
                   <i class="fa-solid fa-forward" id="nextBtn"></i>
                   <div class="volume">
-                    <i class="fa-solid fa-volume-high"></i>
+                   <!-- <i class="fa-solid fa-volume-high"></i>-->
                     <input type="range" id="volume-range" min="0" max="100" value="100">
                   </div>
                 </div>

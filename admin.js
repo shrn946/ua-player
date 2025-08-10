@@ -22,8 +22,9 @@ jQuery(document).ready(function($) {
                 css: { width: '60px', height: '60px', objectFit: 'cover', marginLeft: '10px', display: item.image ? 'inline-block' : 'none' }
             });
 
-            // Upload button
-            var imgBtn = $('<button>', { type: 'button', text: 'Upload Image', class: 'button' })
+            // Upload image button with icon
+            var imgBtn = $('<button>', { type: 'button', class: 'button ua-upload-btn', title: 'Upload Image' })
+                .append('<span class="dashicons dashicons-format-image"></span>')
                 .on('click', function(e) {
                     e.preventDefault();
                     var frame = wp.media({ title: 'Select Image', multiple: false, library: { type: 'image' } });
@@ -60,7 +61,9 @@ jQuery(document).ready(function($) {
                 placeholder: 'Audio URL'
             });
 
-            var audioBtn = $('<button>', { type: 'button', text: 'Upload Audio', class: 'button' })
+            // Upload audio button with icon
+            var audioBtn = $('<button>', { type: 'button', class: 'button ua-upload-btn', title: 'Upload Audio' })
+                .append('<span class="dashicons dashicons-format-audio"></span>')
                 .on('click', function(e) {
                     e.preventDefault();
                     var frame = wp.media({ title: 'Select Audio', multiple: false, library: { type: 'audio' } });
@@ -72,8 +75,9 @@ jQuery(document).ready(function($) {
                     frame.open();
                 });
 
-            // Remove button (use data-index attribute for current index)
-            var removeBtn = $('<button>', { type: 'button', text: 'Remove', class: 'button button-secondary' })
+            // Remove button with icon
+            var removeBtn = $('<button>', { type: 'button', class: 'button button-secondary ua-remove-btn', title: 'Remove Item' })
+                .append('<span class="dashicons dashicons-no"></span>')
                 .on('click', function() {
                     var currentIndex = parseInt(row.attr('data-index'), 10);
                     if (!isNaN(currentIndex)) {

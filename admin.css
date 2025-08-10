@@ -7,6 +7,28 @@
     border-radius: 4px;
     box-shadow: 0 1px 1px rgba(0,0,0,0.04);
 }
+.ua-upload-btn,
+.ua-remove-btn {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    text-align: center;
+    line-height: 32px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.ua-upload-btn .dashicons,
+.ua-remove-btn .dashicons {
+    vertical-align: middle;
+    color: #555;
+}
+
+.ua-upload-btn:hover .dashicons,
+.ua-remove-btn:hover .dashicons {
+    color: #0073aa; /* WordPress admin blue */
+}
+
 
 /* Field rows */
 .ua-field-row {
@@ -31,6 +53,20 @@
 /* Upload buttons */
 .ua-player-item .button {
     white-space: nowrap;
+    text-align: center;
+    padding: 0px;
+}
+input.ua-title-field.regular-text {
+    margin-bottom: 10px;
+}
+input.ua-subtitle-field.regular-text {
+    margin-bottom: 10px;
+}
+.dashicons-plus:before {
+    content: "\f132";
+    position: relative;
+    left: -4px;
+    top: 6px;
 }
 
 /* Image preview */
