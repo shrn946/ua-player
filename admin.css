@@ -1,0 +1,62 @@
+/* Main container for each track item */
+.ua-player-item {
+    border: 1px solid #ccd0d4;
+    background: #fff;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.04);
+}
+
+/* Field rows */
+.ua-field-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+/* Labels */
+.ua-player-item label {
+    font-weight: 600;
+    min-width: 80px;
+    display: inline-block;
+}
+
+/* Inputs */
+.ua-player-item input[type="text"] {
+    flex: 1;
+}
+
+/* Upload buttons */
+.ua-player-item .button {
+    white-space: nowrap;
+}
+
+/* Image preview */
+.ua-image-preview {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border: 1px solid #ccd0d4;
+    border-radius: 3px;
+    display: inline-block;
+    background: #f8f8f8;
+}
+
+/* Remove button */
+.ua-player-item .button-secondary {
+    margin-top: 10px;
+}
+
+/* Add row button styling */
+#ua-add-row {
+    margin-top: 10px;
+}
+
+/* Better spacing for audio row */
+.ua-audio-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
