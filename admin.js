@@ -6,23 +6,26 @@ jQuery(document).ready(function($) {
     function renderItems() {
         itemsContainer.empty();
         playlist.forEach(function(item, index) {
-            var row = $('<div class="ua-player-item">').attr('data-index', index); // assign current index here
+            // Create row without draggable attribute on whole div
+            var row = $('<div class="ua-player-item">').attr('data-index', index);
 
-            // Hidden field for image URL
+            // Create drag handle with grab cursor and icon
+            var dragHandle = $('<div class="drag-handle" title="Drag to reorder" style="cursor: grab; display: inline-block; padding: 0 10px; user-select: none;">&#9776;</div>');
+            dragHandle.attr('draggable', 'true');
+            row.append(dragHandle);
+
             var imgField = $('<input>', {
                 type: 'hidden',
                 class: 'ua-image-field',
                 value: item.image || ''
             });
 
-            // Thumbnail preview
             var imgPreview = $('<img>', {
                 src: item.image || '',
                 class: 'ua-image-preview',
                 css: { width: '60px', height: '60px', objectFit: 'cover', marginLeft: '10px', display: item.image ? 'inline-block' : 'none' }
             });
 
-            // Upload image button with icon
             var imgBtn = $('<button>', { type: 'button', class: 'button ua-upload-btn', title: 'Upload Image' })
                 .append('<span class="dashicons dashicons-format-image"></span>')
                 .on('click', function(e) {
@@ -37,7 +40,6 @@ jQuery(document).ready(function($) {
                     frame.open();
                 });
 
-            // Title
             var titleField = $('<input>', {
                 type: 'text',
                 class: 'ua-title-field regular-text',
@@ -45,7 +47,6 @@ jQuery(document).ready(function($) {
                 placeholder: 'Title'
             });
 
-            // Subtitle
             var subtitleField = $('<input>', {
                 type: 'text',
                 class: 'ua-subtitle-field regular-text',
@@ -53,7 +54,6 @@ jQuery(document).ready(function($) {
                 placeholder: 'Subtitle / Artist'
             });
 
-            // Audio
             var audioField = $('<input>', {
                 type: 'text',
                 class: 'ua-audio-field regular-text',
@@ -61,7 +61,6 @@ jQuery(document).ready(function($) {
                 placeholder: 'Audio URL'
             });
 
-            // Upload audio button with icon
             var audioBtn = $('<button>', { type: 'button', class: 'button ua-upload-btn', title: 'Upload Audio' })
                 .append('<span class="dashicons dashicons-format-audio"></span>')
                 .on('click', function(e) {
@@ -75,7 +74,6 @@ jQuery(document).ready(function($) {
                     frame.open();
                 });
 
-            // Remove button with icon
             var removeBtn = $('<button>', { type: 'button', class: 'button button-secondary ua-remove-btn', title: 'Remove Item' })
                 .append('<span class="dashicons dashicons-no"></span>')
                 .on('click', function() {
@@ -87,7 +85,6 @@ jQuery(document).ready(function($) {
                     }
                 });
 
-            // Append fields
             var imgRow = $('<div class="ua-field-row">')
                 .append('<label>Image:</label>')
                 .append(imgBtn)
@@ -119,14 +116,66 @@ jQuery(document).ready(function($) {
     }
 
     $('#ua-add-row').on('click', function(e) {
-        e.preventDefault(); // prevent form submission or page reload
+        e.preventDefault();
         playlist.push({ image: '', title: '', subtitle: '', audio: '' });
         renderItems();
         updateJSON();
-        return false; // stop bubbling
+        return false;
     });
 
     itemsContainer.on('change input', 'input', updateJSON);
+
+    // DRAG & DROP with handle only
+    var draggedEl = null;
+
+    itemsContainer.on('dragstart', '.drag-handle', function(e) {
+        draggedEl = $(this).closest('.ua-player-item')[0];
+        e.originalEvent.dataTransfer.effectAllowed = 'move';
+        $(draggedEl).css('opacity', '0.5');
+    });
+
+    itemsContainer.on('dragend', '.drag-handle', function(e) {
+        if (!draggedEl) return;
+        $(draggedEl).css('opacity', '1');
+        draggedEl = null;
+        updateOrder();
+    });
+
+    itemsContainer.on('dragover', '.ua-player-item', function(e) {
+        e.preventDefault();
+        e.originalEvent.dataTransfer.dropEffect = 'move';
+
+        if (!draggedEl || draggedEl === this) return;
+
+        var $dragged = $(draggedEl);
+        var $target = $(this);
+
+        var targetOffset = $target.offset();
+        var targetHeight = $target.outerHeight();
+        var mouseY = e.originalEvent.clientY;
+
+        if (mouseY - targetOffset.top < targetHeight / 2) {
+            $target.before($dragged);
+        } else {
+            $target.after($dragged);
+        }
+    });
+
+    function updateOrder() {
+        var newPlaylist = [];
+        itemsContainer.children('.ua-player-item').each(function() {
+            var row = $(this);
+            newPlaylist.push({
+                image: row.find('.ua-image-field').val(),
+                title: row.find('.ua-title-field').val(),
+                subtitle: row.find('.ua-subtitle-field').val(),
+                audio: row.find('.ua-audio-field').val()
+            });
+        });
+        playlist = newPlaylist;
+        updateJSON();
+        renderItems(); // re-render to update indexes & UI
+    }
 
     renderItems();
 });

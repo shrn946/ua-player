@@ -9,6 +9,13 @@
   --scrollbar-track: rgb(79, 78, 78);
   --scrollbar-thumb: rgb(116, 116, 116);
 }
+html, body {
+  margin: 0 !important;
+  padding: 0!important;
+  overflow-x: hidden;
+  width: 100vw;
+}
+
 
 *,
 *::before,
